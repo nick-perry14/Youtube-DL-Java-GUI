@@ -180,50 +180,17 @@ public class Main {
 	}
 
 	private static boolean isAudio(final String in) {
-		switch (in.hashCode()) {
-		case -810722925: {
-			if (!in.equals("vorbis")) {
-				return false;
-			}
-			break;
+		switch (in) {
+		case "aac":
+		case "flac":
+		case "mp3":
+		case "m4a":
+		case "opus":
+		case "vorbis":
+		case "wav":
+			return true;
+		default:
+			return false;
 		}
-		case 96323: {
-			if (!in.equals("aac")) {
-				return false;
-			}
-			break;
-		}
-		case 106458: {
-			if (!in.equals("m4a")) {
-				return false;
-			}
-			break;
-		}
-		case 108272: {
-			if (!in.equals("mp3")) {
-				return false;
-			}
-			break;
-		}
-		case 117484: {
-			if (!in.equals("wav")) {
-				return false;
-			}
-			break;
-		}
-		case 3145576: {
-			if (!in.equals("flac")) {
-				return false;
-			}
-			break;
-		}
-		case 3418175: {
-			if (!in.equals("opus")) {
-				return false;
-			}
-			break;
-		}
-		}
-		return true;
 	}
 }
