@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -25,9 +28,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
-import com.sapher.youtubedl.YoutubeDL;
-import com.sapher.youtubedl.YoutubeDLException;
-import com.sapher.youtubedl.YoutubeDLRequest;
 
 public class Main {
 	private JFrame frmYoutubedl;
@@ -97,7 +97,7 @@ public class Main {
 		final String[] listData = { "3gp", "aac", "flv", "m4a", "mp3", "mp4", "ogg", "wav", "webm" };
 		(this.formatList = new JList<String>()).setListData(listData);
 		this.panel.add(this.formatList, "4, 8, 1, 2, fill, fill");
-		final JLabel copyrightLabel = new JLabel("©Nick Perry 2020");
+		final JLabel copyrightLabel = new JLabel("ï¿½Nick Perry 2020");
 		this.panel.add(copyrightLabel, "2, 12");
 		this.submitButton = new JButton("Submit");
 		this.panel.add(this.submitButton, "4, 12, right, default");
@@ -119,25 +119,28 @@ public class Main {
 								"Required Field!", 0);
 						return;
 					}
+					StringBuilder sb = new StringBuilder("cmd /c cd ").append(dir).append(" && yt-dlp");
 					for (final String form : format) {
-						final YoutubeDLRequest request = new YoutubeDLRequest(url, dir);
 						if (!Main.this.playlistButton.isSelected()) {
-							request.setOption("no-playlist");
+							sb.append(" --no-playlist");
 						}
 						if (isAudio(form)) {
-							request.setOption("extract-audio");
-							request.setOption("audio-format", form);
+							sb.append(" -x --audio-format ").append(form);
 						} else {
-							request.setOption("format", form);
+							sb.append(" -f ").append(form);
 						}
-						YoutubeDL.execute(request);
 					}
-					JOptionPane.showMessageDialog(Main.this.frmYoutubedl, "Download Successful!", "Download Completed",
+					sb.append(" ").append(url).append(" && exit");
+					Process process = Runtime.getRuntime().exec(sb.toString());
+					BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+					while (reader.readLine() != null) {}
+					reader.close();
+					JOptionPane.showMessageDialog(Main.this.frmYoutubedl, "Download Completed!", "Download Completed!",
 							-1);
 				} catch (MalformedURLException e3) {
 					JOptionPane.showMessageDialog(Main.this.frmYoutubedl, "URL is Invalid!", "Invalid URL!", 0);
-				} catch (YoutubeDLException e2) {
-					e2.printStackTrace();
+				} catch (IOException e4) {
+
 				}
 			}
 		});

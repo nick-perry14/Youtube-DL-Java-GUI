@@ -17,11 +17,6 @@
 			<artifactId>jgoodies-forms</artifactId>
 			<version>1.6.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.sapher</groupId>
-			<artifactId>youtubedl-java</artifactId>
-			<version>master-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
